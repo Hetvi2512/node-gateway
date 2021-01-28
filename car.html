@@ -1,0 +1,146 @@
+See the console
+<!DOCTYPE html>
+<html>
+<body>
+ <script>
+const cars =[
+    {
+        CarName:'SWIFT DESIRE',
+        CarModel:'SUV',
+        ManufacturingYear:2015,
+        Price:820000.98,
+        LastServiceDate:new Date(2018, 11, 24)
+    },
+    {
+        CarName:'BMW',
+        CarModel:'LUXURY CAR',
+        ManufacturingYear:2019,
+        Price:4020000.48,
+        LastServiceDate:new Date(2020, 11, 6)
+    },
+    {
+        CarName:'AUDI',
+        CarModel:'LUXURY CAR',
+        ManufacturingYear:2018,
+        Price:5200000.00,
+        LastServiceDate:new Date(2019, 11, 6)
+    },
+    {
+        CarName:'BRV',
+        CarModel:'SUV',
+        ManufacturingYear:2018,
+        Price:1800000.98,
+        LastServiceDate:new Date(2019,5, 6)
+    },
+    {
+        CarName:'CHEVROLET TAHOE',
+        CarModel:'SUV',
+        ManufacturingYear:2015,
+        Price:1500000.89,
+        LastServiceDate:new Date(2017,5, 9)
+    },
+    {
+        CarName:'AUDI A7',
+        CarModel:'HATCHBACK',
+        ManufacturingYear:2015,
+        Price:1000000.98,
+        LastServiceDate:new Date(2016,5, 6)
+    },
+  
+    {
+        CarName:'HONDA ODYSSEY',
+        CarModel:'MINIVAN',
+        ManufacturingYear:2007,
+        Price:900000.48,
+        LastServiceDate:new Date(2016,5, 6)
+    },
+    {
+        CarName:'MAHINDRA QUANTO',
+        CarModel:'WAGON',
+        ManufacturingYear:2017,
+        Price:90000.00,
+        LastServiceDate:new Date(2018,8, 8)
+    },
+    {
+        CarName:'AUDI G8',
+        CarModel:'COUPE',
+        ManufacturingYear:2011,
+        Price:3200000.48,
+        LastServiceDate:new Date(2020,5, 6)
+    },
+    {
+        CarName:'MARUTI SUZUKI CIAZ',
+        CarModel:'SEDAN',
+        ManufacturingYear:2014,
+        Price:900000.65,
+        LastServiceDate:new Date(2021,1, 1)
+    },
+]
+
+//2. Get total Car count.
+//Finding total number of cars
+const total = cars.length;
+console.log("Total Cars :"+total);
+
+//3. Filter array with following details 
+//Finding the car on the basis of name
+var carname = prompt("Please enter the car name");
+const found =cars.filter(car => car.CarName==carname.toUpperCase());
+if(found.length > 0)
+{
+    console.log("Car with name "+carname+ " is found");
+}
+else{
+    console.log("Car with name "+carname+ " was not found");
+}
+//Finding the cars on the basis of car model
+var carmodel = prompt("Please enter the car model");
+const model =cars.filter(car => car.CarModel==carmodel.toUpperCase());
+if(model.length > 0)
+{
+    console.log("Below are the cars with car model =" +carmodel);
+    console.log(model);
+}
+else{
+    console.log("Car with model "+carmodel+ " was not found");
+}
+//Finding the car on basis of year
+var year = prompt("Enter the year to find the car");
+const year1 =cars.filter(car => car.ManufacturingYear>=year);
+if(year1.length > 0)
+{
+    console.log("Below are the cars with ManufacturingYear greater than " +year);
+    console.log(year1);
+}
+else{
+    console.log("Car was not found");
+}
+
+//4. Print current date and time.
+var d = new Date();
+console.log("Present date:" +d.toString());
+
+//5. Print last month date from current date.
+var previousmonth = Math.abs((d.getMonth()-1));
+if(previousmonth == 1)
+{
+    //if month is january than we have to change the year
+    var pd = new Date(d.getFullYear()-1,11,d.getDate());
+}
+else{
+    var pd = new Date(d.getFullYear(),previousmonth,d.getDate());
+}
+console.log("Previous Months date: "+pd.toString());
+
+//6. Print last date of next month from current date
+var nextmonth = (d.getMonth()+1);
+if(nextmonth == 12){
+    //if month is december than we have to change the year
+  var nd = new Date(d.getFullYear() + 1,1,0);
+} else {
+  var nd = new Date(d.getFullYear(),nextmonth+1,0);
+}
+console.log("Next month's last date: "+nd.toString());
+</script>
+</body>
+</html>

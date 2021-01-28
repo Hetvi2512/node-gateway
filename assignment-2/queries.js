@@ -34,35 +34,41 @@ const getCarsById = (request, response) => {
 }
 
 const createCar = async (request, response) => {
+  
   let carname  = (request.body.carname).toString().toLowerCase();
   let makename = (request.body.makename).toString().toLowerCase();
   let modelname = (request.body.modelname).toString().toLowerCase();
   let newmodelid;
   let newmakeid;
+
+  // to check if car with same name exists or not
    const oldCar = await pool.query("select name from car where name = $1",[carname]);
    if(oldCar.rowCount>=1)
    {
     response.send("Car Already Exists !");
    }
    else{
+     //To check if makename and model name exists or not
     const oldMakeId = await pool.query("select makeid,makename from make where  makename = $1",[makename]);
     const oldModelId = await pool.query("select modelid,modelname from model where modelname =$1",[modelname]);
 
     if(oldMakeId.rowCount >=1)
     {
+      // if make name exists then fetching its ID
       newmakeid = oldMakeId.rows[0].makeid;
-      console.log(oldMakeId.rows[0].makeid);
     }
     else{
+      // If make name is new then inserting it and getting new ID
        const result2 = await pool.query('INSERT INTO make (makename) VALUES ($1) returning makeid', [makename]);
        newmakeid = result2.rows[0].makeid;
      }
     if(oldModelId.rowCount >=1)
     {
+      // if model name exists then fetching its ID
       newmodelid = oldModelId.rows[0].modelid;
-      console.log(oldModelId.rows[0].modelid);
     }
     else{
+       // If make name is new then inserting it and getting new ID
       const result1 = await pool.query('INSERT INTO model (modelname) VALUES ($1) returning modelid', [modelname]);
        newmodelid = result1.rows[0].modelid;
     }
@@ -134,37 +140,3 @@ module.exports = {
     updateCar
  
 }
-
-
-
-
-/*
-index.js => app.post('/users', db.createUser)
-
-
-
-
-app.put('/users/:id', db.updateUser)
-
-
-
-const updateUser = (request, response) => {
-  const id = parseInt(request.params.id)
-  let username = request.body.username;
-
-  pool.query(
-    'UPDATE users SET username = $1 WHERE id = $2',
-    [username, id],
-    (error, results) => {
-      if (error) {        
-        throw error
-      }
-      response.status(200).send(`User modified with ID: ${id}`)
-    }
-  )
-}
-
-
-
-
-*/

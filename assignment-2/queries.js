@@ -1,3 +1,5 @@
+var datetime = require('node-datetime');
+
 const Pool = require('pg').Pool
 const pool = new Pool({
   user: 'postgres',
@@ -6,6 +8,7 @@ const pool = new Pool({
   password: 'hetvi',
   port: 5432,
 })
+
 
 
 const getCars = (request, response) => {
@@ -119,8 +122,29 @@ const updateCar = async(request, response) => {
       }
     )
   }
-  
-
+  const carImageUpload = (request,response,next)=>{
+    
+    const id = parseInt(request.params.id);
+   if (!request.file) {
+    response.status(500);
+    return next(err);
+  } 
+  var dt = datetime.create();
+   var formatted = dt.format('m/d/Y H:M:S');
+  var name = request.file.filename;
+  var details = `/uploads/images/${request.file.filename}`;
+  console.log(details);
+  pool.query('INSERT INTO carimage (imagename,createddate,carid,imagePath) VALUES ($1,$2,$3,$4) ', [name,formatted,id,details]);
+  response.json({ fileUrl: 'http://localhost:3000/uploads/images/' + request.file.filename });
+  }
+const getCarWithImage = (request, response) => {
+  pool.query('SELECT c.id,c.name, m.makename,mo.modelname,img.imagename,img.imagepath FROM car c left join make m on c.makeid = m.makeid left join model mo on c.modelid = mo.modelid left join carimage img on c.id = img.carid', (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
 const deleteCar = (request, response) => {
   const id = parseInt(request.params.id)
 
@@ -137,6 +161,8 @@ module.exports = {
     getCarsById,
     createCar,
     deleteCar,
-    updateCar
+    updateCar,
+    carImageUpload,
+    getCarWithImage
  
 }
